@@ -1,0 +1,10 @@
+stages:
+  - test 
+
+run_test:
+  tags:
+    - GPU
+  stage: test
+  image: python:3.10.6
+  script:
+    - "python -V"
