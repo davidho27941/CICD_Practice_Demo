@@ -11,9 +11,12 @@ from core.module import (
     load_model,
 )
 
-def test_if_config_correct():
+def get_config():
     with open(f"{os.getcwd()}/config/config.yml", 'r') as stream:
         config = yaml.load(stream, Loader=yaml.CLoader)
+    return config 
+def test_if_config_correct():
+    config = get_config()
     
     FIRST_LEVEL_CONTENT = [
                            "hyperparameters", 
@@ -44,22 +47,26 @@ def test_if_config_correct():
     return result
 
 def test_if_data_path_exists():
-    if os.path.isdir(f"{os.getcwd()}/data"):
+    config = get_config()
+
+    if os.path.isdir(config['data_configuration']['PATH']):
         return True
     else: 
         return False
 
 def test_if_dataset_exists():
-    if os.path.isdir(f"{os.getcwd()}/data/mnist/"):
+    config = get_config()
+
+    if os.path.isdir(f"{config['model_configuration']['PATH']}/{config['model_configuration']['DEMO_MNIST_MODEL']}")
         return True
     else: 
         return False
 
 def test_if_preprocessing_work_properly():
-    with open(f"{os.getcwd()}/config/config.yml", 'r') as stream:
-        config = yaml.load(stream, Loader=yaml.CLoader)
+    config = get_config()
+
     data, _ = load_dataset(
-        f"{os.getcwd()}/data",
+        config['data_configuration']['PATH'],
         "train",
     )
 
