@@ -57,7 +57,7 @@ def test_if_data_path_exists():
 def test_if_dataset_exists():
     config = get_config()
 
-    if os.path.isdir(f"{config['model_configuration']['PATH']}/{config['model_configuration']['DEMO_MNIST_MODEL']}")
+    if os.path.isdir(f"{config['data_configuration']['PATH']}")
         return True
     else: 
         return False
