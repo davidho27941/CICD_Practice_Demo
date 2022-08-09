@@ -34,10 +34,10 @@ run_train:
     - pytest test/test.py
     - python main.py --stage train
 
-run_train:
+run_inference:
   tags:
     - GPU
-  stage: train
+  stage: inference
   image: nvcr.io/nvidia/tensorflow:22.04-tf2-py3
   before_script:
     - python -m pip install --upgrade pip
