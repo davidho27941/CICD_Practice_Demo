@@ -47,3 +47,4 @@ run_inference:
     - export PYTHONPATH='./:$PYTHONPATH'
     - pytest test/test.py
     - python main.py --stage test
+    - echo "Succeed!"
