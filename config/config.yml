@@ -7,7 +7,7 @@ hyperparameters:
 
 model_configuration:
   MODEL_NAME: "DEMO_MNIST_MODEL"
-  MODEL_PATH: "model"
+  MODEL_PATH: "/model_artifact"
 
 data_configuration:
   PATH: "data"
