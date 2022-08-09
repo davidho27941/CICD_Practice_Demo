@@ -33,20 +33,21 @@ run_train:
     - python main.py --stage prepare_data
     - pytest test/test.py
     - python main.py --stage train
+    - cp -r $PWD/model/DEMO_MNIST_MODEL /model_artifact
 
-run_inference:
-  tags:
-    - GPU
-  stage: inference
-  image: nvcr.io/nvidia/tensorflow:22.04-tf2-py3
-  before_script:
-    - python -m pip install --upgrade pip
-    - python -m pip install -r requirements.txt
-    - python3 -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
-    - python3 -m flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-  script: 
-    - export PYTHONPATH='./:$PYTHONPATH'
-    - python main.py --stage prepare_data
-    - pytest test/test.py
-    - python main.py --stage train
-    - python main.py --stage test
+# run_inference:
+#   tags:
+#     - GPU
+#   stage: inference
+#   image: nvcr.io/nvidia/tensorflow:22.04-tf2-py3
+#   before_script:
+#     - python -m pip install --upgrade pip
+#     - python -m pip install -r requirements.txt
+#     - python3 -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+#     - python3 -m flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+#   script: 
+#     - export PYTHONPATH='./:$PYTHONPATH'
+#     - python main.py --stage prepare_data
+#     - pytest test/test.py
+#     - python main.py --stage train
+#     - python main.py --stage test
