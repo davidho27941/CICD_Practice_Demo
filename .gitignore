@@ -3,3 +3,6 @@ data/*
 
 model/
 model/*
+
+test/__pycache__/
+core/__pycache__/
