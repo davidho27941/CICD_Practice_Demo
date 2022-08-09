@@ -13,7 +13,6 @@ def get_mnist(
               SPLIT: str,
               **kargs: Dict[str, Any],
               ) -> bool:
-    os.mkdir(PATH)
     try:
         mnist = tfds.load(
             name='mnist',
