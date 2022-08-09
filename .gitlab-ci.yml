@@ -33,7 +33,6 @@ run_train:
     - python main.py --stage prepare_data
     - pytest test/test.py
     - python main.py --stage train
-    - cp -r $PWD/model/DEMO_MNIST_MODEL /model_artifact
 
 # run_inference:
 #   tags:
