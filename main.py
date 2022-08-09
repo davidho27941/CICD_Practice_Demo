@@ -7,6 +7,7 @@ import sys
 import tensorflow_datasets as tfds 
 import yaml
 
+from flask import Flask
 from argparse import ArgumentParser
 
 from typing import (
@@ -23,8 +24,6 @@ from core.module import (
     save_model,
     load_model,
 )
-
-
 
 def train(
           CONFIG: Dict[str, Any],
@@ -59,7 +58,8 @@ def train(
 
 def test(
          CONFIG: Dict[str, Any],
-         SPLIT = 'test') -> None:    
+         SPLIT = 'test'
+         ) -> None:    
 
     test_dataset, _ = load_dataset(
                                    CONFIG['data_configuration']['PATH'], 
@@ -92,9 +92,6 @@ def main(stage='train') -> None:
         train(config)
     elif stage == 'test':
         test(config)
-    
-     
-     
 
 if __name__ == '__main__': 
     parser = ArgumentParser()
