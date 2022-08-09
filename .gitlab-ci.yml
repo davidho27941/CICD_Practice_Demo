@@ -13,4 +13,4 @@ run_test:
     - python3 -m flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
   script:
     - python main.py --stage prepare_data
-    - pytest test/test.py
+    - pytest $PWD/test/test.py
