@@ -46,14 +46,6 @@ def test_if_config_correct():
     
     return result
 
-def test_if_data_path_exists():
-    config = get_config()
-
-    if os.path.isdir(config['data_configuration']['PATH']):
-        return True
-    else: 
-        return False
-
 def test_if_dataset_exists():
     config = get_config()
 
