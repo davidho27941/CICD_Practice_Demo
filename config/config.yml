@@ -1,0 +1,13 @@
+hyperparameters:
+  EPOCHS: 100
+  BATCH_SIZE: 128
+  LR: 0.01
+  OPTIMIZER: "adam"
+  LOSS_FUNC: "categorical_crossentropy"
+
+model_configuration:
+  MODEL_NAME: "DEMO_MNIST_MODEL"
+  MODEL_PATH: "model"
+
+data_configuration:
+  PATH: "data"
