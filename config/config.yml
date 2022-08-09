@@ -10,4 +10,4 @@ model_configuration:
   MODEL_PATH: "/model_artifact"
 
 data_configuration:
-  PATH: "/data_artifact"
+  PATH: "/data_artifact/mnist_dataset/"
