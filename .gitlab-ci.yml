@@ -30,7 +30,6 @@ run_train:
     - python3 -m flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
   script: 
     - export PYTHONPATH='./:$PYTHONPATH'
-    - python main.py --stage prepare_data
     - pytest test/test.py
     - python main.py --stage train
 
@@ -46,7 +45,5 @@ run_inference:
     - python3 -m flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
   script: 
     - export PYTHONPATH='./:$PYTHONPATH'
-    - python main.py --stage prepare_data
     - pytest test/test.py
-    - python main.py --stage train
     - python main.py --stage test
