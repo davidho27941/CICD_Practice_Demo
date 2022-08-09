@@ -1,5 +1,6 @@
 import tensorflow_datasets as tfds 
 import tensorflow as tf 
+import os
 
 from typing import (
     List,
@@ -12,6 +13,7 @@ def get_mnist(
               SPLIT: str,
               **kargs: Dict[str, Any],
               ) -> bool:
+    os.mkdir(PATH)
     try:
         mnist = tfds.load(
             name='mnist',
@@ -23,8 +25,8 @@ def get_mnist(
         print("Failed to load mnist dataset!")
 
 def load_dataset(
-                 PATH, 
-                 SPLIT,
+                 PATH: str, 
+                 SPLIT: str,
                  ):
     dataset, dataset_info = tfds.load(
             name='mnist',
@@ -64,11 +66,19 @@ def save_model(
                MODEL: tf.keras.Model,
                CONFIG: Dict[str, Any],
                ) -> None:
-    MODEL.save(f"{CONFIG['MODEL_PATH']}/{CONFIG['MODEL_NAME']}")
+    MODEL.save(
+               f"{os.getcwd()}/"
+               f"{CONFIG['model_configuration']['MODEL_PATH']}/"
+               f"{CONFIG['model_configuration']['MODEL_NAME']}"
+               )
 
 def load_model(
                CONFIG: Dict[str, Any],
                ) -> tf.keras.Model:
-    loaded_model = tf.keras.models.load_model(f"{CONFIG['MODEL_PATH']}/{CONFIG['MODEL_NAME']}")
+    loaded_model = tf.keras.models.load_model(
+                                              f"{os.getcwd()}/"
+                                              f"{CONFIG['model_configuration']['MODEL_PATH']}/"
+                                              f"{CONFIG['model_configuration']['MODEL_NAME']}"
+                                              )
     return loaded_model
 
