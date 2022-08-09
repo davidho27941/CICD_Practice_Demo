@@ -13,7 +13,7 @@ def get_mnist(
               SPLIT: str,
               **kargs: Dict[str, Any],
               ) -> bool:
-    os.mkdir(PATH)
+    os.makedirs(PATH,  exist_ok=True)
     try:
         mnist = tfds.load(
             name='mnist',
@@ -67,7 +67,6 @@ def save_model(
                CONFIG: Dict[str, Any],
                ) -> None:
     MODEL.save(
-               f"{os.getcwd()}/"
                f"{CONFIG['model_configuration']['MODEL_PATH']}/"
                f"{CONFIG['model_configuration']['MODEL_NAME']}"
                )
@@ -76,7 +75,6 @@ def load_model(
                CONFIG: Dict[str, Any],
                ) -> tf.keras.Model:
     loaded_model = tf.keras.models.load_model(
-                                              f"{os.getcwd()}/"
                                               f"{CONFIG['model_configuration']['MODEL_PATH']}/"
                                               f"{CONFIG['model_configuration']['MODEL_NAME']}"
                                               )
