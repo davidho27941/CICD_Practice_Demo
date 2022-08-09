@@ -7,7 +7,10 @@ hyperparameters:
 
 model_configuration:
   MODEL_NAME: "DEMO_MNIST_MODEL"
-  MODEL_PATH: "/model_artifact"
+  MODEL_PATH: "/artifacts/model"
 
 data_configuration:
-  PATH: "/data_artifact/mnist_dataset/"
+  PATH: "/artifacts/data/mnist_dataset/"
+
+client:
+  TEST_DATASET_PATH: "/artifacts/data/1.png"
