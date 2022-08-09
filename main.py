@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import os
 import sys
 import tensorflow_datasets as tfds 
+import yaml
 
 from argparse import ArgumentParser
 
@@ -26,27 +27,29 @@ from core.module import (
 
 
 def train(
-          DATA_PATH: str, 
           CONFIG: Dict[str, Any],
           SPLIT = 'train',
           ) -> None:
-    get_mnist(DATA_PATH, SPLIT)
 
-    train_dataset, _ = load_dataset(DATA_PATH, SPLIT)
-    train_dataset = train_dataset.map(lambda x, y: preprocessing(x, y)).batch(CONFIG['BATCH_SIZE'])
+    train_dataset, _ = load_dataset(
+                                    CONFIG['data_configuration']['PATH'], 
+                                    SPLIT,
+                                    )
+    train_dataset = train_dataset.map(lambda x, y: preprocessing(x, y)).batch(CONFIG['hyperparameters']['BATCH_SIZE'])
 
-    if CONFIG['OPTIMIZER'] == 'adam':
-        optimizer = tf.keras.optimizers.Adam(learning_rate = CONFIG['LR'])
-    model = build_model(CONFIG['MODEL_NAME'])
+    if CONFIG['hyperparameters']['OPTIMIZER'] == 'adam':
+        optimizer = tf.keras.optimizers.Adam(learning_rate = CONFIG['hyperparameters']['LR'])
+
+    model = build_model(CONFIG['model_configuration']['MODEL_NAME'])
     model.compile(
                   optimizer=optimizer,
-                  loss='categorical_crossentropy',
+                  loss=CONFIG['hyperparameters']['LOSS_FUNC'],
                   metrics=['acc'],
                   )
     
     history = model.fit(
                         train_dataset, 
-                        epochs=CONFIG['EPOCHS'],
+                        epochs=CONFIG['hyperparameters']['EPOCHS'],
                         verbose=1,
                         )
     save_model(
@@ -55,11 +58,14 @@ def train(
                )
 
 def test(
-         DATA_PATH: str, 
          CONFIG: Dict[str, Any],
          SPLIT = 'test') -> None:    
-    test_dataset, _ = load_dataset(DATA_PATH, SPLIT)
-    test_dataset = test_dataset.map(lambda x, y: preprocessing(x, y)).batch(CONFIG['BATCH_SIZE'])
+
+    test_dataset, _ = load_dataset(
+                                   CONFIG['data_configuration']['PATH'], 
+                                   SPLIT,
+                                   )
+    test_dataset = test_dataset.map(lambda x, y: preprocessing(x, y)).batch(CONFIG['hyperparameters']['BATCH_SIZE'])
 
     model = load_model(CONFIG)
     test_loss, test_acc = model.evaluate(test_dataset)
@@ -67,15 +73,9 @@ def test(
     prediction = model.predict(test_dataset)
 
 def main(stage='train') -> None:
-    DATA_PATH = f'{os.getcwd()}/data'
-    config_dict = {
-        "EPOCHS": 100,
-        "BATCH_SIZE": 128,
-        "LR": 0.01,
-        "OPTIMIZER": 'adam',
-        "MODEL_NAME": "DEMO_MNIST_MODEL",
-        "MODEL_PATH": f"{os.getcwd()}/model",
-    }
+    with open(f"{os.getcwd()}/config/config.yml", 'r') as stream:
+        config = yaml.load(stream, Loader=yaml.CLoader)
+
     AVAILABLE_STAGE = [
                        'prepare_data', 
                        'train', 
@@ -87,11 +87,11 @@ def main(stage='train') -> None:
 
     if stage=='prepare_data':
         SPLIT = "train+test"
-        get_mnist(DATA_PATH, SPLIT)
+        get_mnist(config['data_configuration']['PATH'], SPLIT)
     elif stage == 'train':
-        train(DATA_PATH, config_dict)
+        train(config)
     elif stage == 'test':
-        test(DATA_PATH, config_dict)
+        test(config)
     
      
      
