@@ -15,6 +15,7 @@ def get_config():
     with open(f"{os.getcwd()}/config/config.yml", 'r') as stream:
         config = yaml.load(stream, Loader=yaml.CLoader)
     return config 
+    
 def test_if_config_correct():
     config = get_config()
     
