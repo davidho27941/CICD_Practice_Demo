@@ -6,3 +6,5 @@ model/*
 
 test/__pycache__/
 core/__pycache__/
+
+api/__pycache__/
