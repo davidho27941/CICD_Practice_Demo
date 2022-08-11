@@ -1,7 +1,8 @@
 stages:
   - test 
   - train
-  - inference
+  - evaluate
+  - build_image
 
 run_test:
   tags:
@@ -30,13 +31,12 @@ run_train:
     - python3 -m flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
   script: 
     - export PYTHONPATH='./:$PYTHONPATH'
-    - pytest test/test.py
     - python main.py --stage train
 
-run_inference:
+run_evaluate:
   tags:
     - GPU
-  stage: inference
+  stage: evaluate
   image: nvcr.io/nvidia/tensorflow:22.04-tf2-py3
   before_script:
     - python -m pip install --upgrade pip
@@ -45,6 +45,17 @@ run_inference:
     - python3 -m flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
   script: 
     - export PYTHONPATH='./:$PYTHONPATH'
-    - pytest test/test.py
     - python main.py --stage test
-    - echo "Succeed!"
+
+build_image:
+  tags:
+    - GPU-dind
+  stage: build_image
+  image: docker:20.10.16
+  variables:
+    DOCKER_TLS_CERTDIR: "/certs"
+  services:
+    - docker:20.10.16-dind
+  script:
+    - docker build -t 192.168.0.53:5000/cicd:test .
+    - docker push 192.168.0.53:5000/cicd:test
